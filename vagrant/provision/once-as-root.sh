@@ -64,7 +64,7 @@ ln -s /app/vagrant/nginx/app.conf /etc/nginx/sites-enabled/app.conf
 echo "Done!"
 
 info "Initailize databases for MySQL"
-mysql -uroot <<< "CREATE DATABASE yii2advanced"
+mysql -uroot <<< "CREATE DATABASE sk_vote"
 mysql -uroot <<< "CREATE DATABASE yii2_advanced_tests"
 mysql -uroot <<< "GRANT ALL PRIVILEGES ON *.* TO root@'%' IDENTIFIED BY 'sk-vote'; FLUSH PRIVILEGES;"
 echo "Done!"
