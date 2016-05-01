@@ -35,5 +35,10 @@ return [
             ],
         ],
     ],
+	'modules' => [
+		'utility' => [
+			'class' => 'c006\utility\migration\Module',
+		],
+	],
     'params' => $params,
 ];

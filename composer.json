@@ -24,6 +24,7 @@
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",
         "yiisoft/yii2-faker": "*"
+		"c006/yii2-migration-utility": "dev-master",
     },
     "config": {
         "process-timeout": 1800
