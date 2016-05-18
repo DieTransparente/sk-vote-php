@@ -43,6 +43,22 @@ class Ballot extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+	        [
+	            'class' => \voskobovich\behaviors\ManyToManyBehavior::className(),
+	            'relations' => [
+	                'userGroups_ids' => 'userGroups',
+	                'users_ids' => 'users',
+	            ],
+	        ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -55,6 +71,8 @@ class Ballot extends \yii\db\ActiveRecord
             [['code'], 'unique'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => BallotCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['create_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['create_user_id' => 'id']],
+        	[['userGroups_ids', 'users_ids'], 'each', 'rule' => ['integer']],
+        		
         ];
     }
 

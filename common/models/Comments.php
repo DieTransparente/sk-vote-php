@@ -39,17 +39,39 @@ class Comments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'user_id', 'ballot_id', 'ballot_option_id'], 'required'],
+            [['title', 'user_id'], 'required'],
             [['description', 'content'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['user_id', 'rating', 'ballot_id', 'ballot_option_id', 'status'], 'integer'],
             [['title'], 'string', 'max' => 255],
+        	[['rating'], 'default', 'value' => 0],
             [['ballot_id'], 'exist', 'skipOnError' => true, 'targetClass' => Ballot::className(), 'targetAttribute' => ['ballot_id' => 'id']],
             [['ballot_option_id'], 'exist', 'skipOnError' => true, 'targetClass' => BallotOption::className(), 'targetAttribute' => ['ballot_option_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+        	[['ballot_id', 'ballot_option_id'], 'eitherValidator']
         ];
     }
 
+    /**
+     * either valiator for ballot and ballot option relation
+     * 
+     * @param unknown $attribute_name
+     * @param unknown $params
+     * @return boolean
+     */
+    public function eitherValidator($attribute_name, $params)
+    {
+    	if (empty($this->ballot_id) && empty($this->ballot_option_id)) {
+    		$this->addError($attribute_name, Yii::t('backend', 'A comment must be assigned to a ballot or a ballot option'));
+    		return false;
+    	} else if (!empty($this->ballot_id) && !empty($this->ballot_option_id)) {
+    		$this->addError($attribute_name, Yii::t('backend', 'A comment can only be assigned to a ballot OR a ballot option'));
+    		return false;
+    	}
+    
+    	return true;
+    }    
+    
     /**
      * @inheritdoc
      */

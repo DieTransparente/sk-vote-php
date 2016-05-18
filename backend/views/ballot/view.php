@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Ballot */
@@ -31,16 +32,39 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'code',
             'name',
+            'status',
             'description:ntext',
             'description_long:ntext',
-            'created_at',
-            'updated_at',
-            'create_user_id',
-            'start_at',
-            'finish_at',
-            'category_id',
-            'status',
-            'visible_from',
+            'start_at:datetime',
+            'finish_at:datetime',
+            'visible_from:datetime',
+            'created_at:datetime',
+            'updated_at:datetime',
+        	[
+			    'attribute'=>'category',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getCategory()->all(), 'id', 'name')),
+        		'format'=>'raw'
+		    ],
+        	[
+			    'attribute'=>'userGroup',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getUserGroups()->all(), 'id', 'name')),
+        		'format'=>'raw'
+		    ],
+        	[
+			    'attribute'=>'createUser',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getCreateUser()->all(), 'id', 'username')),
+        		'format'=>'raw'
+		    ],
+        	[
+			    'attribute'=>'ballotOptions',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getBallotOptions()->all(), 'id', 'name')),
+        		'format'=>'raw'
+		    ],
+        	[
+			    'attribute'=>'comments',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getComments()->all(), 'id', 'title')),
+        		'format'=>'raw'
+		    ],
         ],
     ]) ?>
 

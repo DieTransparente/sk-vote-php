@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BallotOption */
@@ -33,7 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'status',
             'vote_count',
-            'ballot_id',
+        	[
+			    'attribute'=>'ballot',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getBallot()->all(), 'id', 'name')),
+        		'format'=>'raw'
+		    ],
         ],
     ]) ?>
 

@@ -2,6 +2,7 @@
 namespace common\models;
 
 use Yii;
+
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -20,6 +21,8 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property UserHasUserGroup[] $userHasUserGroups
+ * @property UserGroup[] $userGroup
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -41,6 +44,12 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
+	        [
+	            'class' => \voskobovich\behaviors\ManyToManyBehavior::className(),
+	            'relations' => [
+	                'userGroups_ids' => 'userGroups',
+	            ],
+	        ],
         ];
     }
 
@@ -52,6 +61,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+        	[['userGroups_ids'], 'each', 'rule' => ['integer']],
         ];
     }
 
@@ -115,6 +125,22 @@ class User extends ActiveRecord implements IdentityInterface
         $timestamp = (int) substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserGroups()
+    {
+    	return $this->hasMany(UserGroup::className(), ['id' => 'user_group_id'])->viaTable('user_has_user_group', ['user_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserGroupsHasUser()
+    {
+        return $this->hasMany(UserHasUserGroup::className(), ['user_id' => 'id']);
     }
 
     /**
@@ -185,4 +211,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+    
+    
 }

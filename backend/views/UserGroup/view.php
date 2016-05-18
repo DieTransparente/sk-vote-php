@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\UserGroup */
@@ -31,9 +32,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'description:ntext',
-            'created_at',
-            'updated_at',
             'status',
+            'created_at:datetime',
+            'updated_at:datetime',
+        	[
+			    'attribute'=>'users',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getUsers()->all(), 'id', 'username')),
+        		'format'=>'raw'
+		    ],
+        	[
+			    'attribute'=>'ballots',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getBallots()->all(), 'id', 'name')),
+        		'format'=>'raw'
+		    ]
         ],
     ]) ?>
 

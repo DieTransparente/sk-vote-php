@@ -32,6 +32,22 @@ class UserGroup extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+	        [
+	            'class' => \voskobovich\behaviors\ManyToManyBehavior::className(),
+	            'relations' => [
+	                'ballots_ids' => 'ballots',
+	                'users_ids' => 'users',
+	            ],
+	        ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -40,6 +56,7 @@ class UserGroup extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['status'], 'integer'],
             [['name'], 'string', 'max' => 255],
+        	[['ballots_ids', 'users_ids'], 'each', 'rule' => ['integer']],
         ];
     }
 

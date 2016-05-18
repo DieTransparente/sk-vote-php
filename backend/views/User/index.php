@@ -33,24 +33,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
             'created_at',
             'updated_at',
-        	[
-        		'attribute' => 'User Groups',
-        		'label'=>'User Groups',
-        		'format' => 'raw',
-        		'value'=>function ($model) {
-// 	        		$sections = [];
-// 	        		if($model->section) {
-// 	        			foreach($model->section as $section) {
-// 	        				$sections[] = $section->section;
-// 	        			}
-// 	        		}
-// 	        		return implode(', ', $sections);
-					// get User groups
+//         	[
+//         		'attribute' => 'User Groups',
+//         		'label'=>'User Groups',
+//         		'format' => 'raw',
+//         		'value'=>function ($model) {
+// // 	        		$sections = [];
+// // 	        		if($model->section) {
+// // 	        			foreach($model->section as $section) {
+// // 	        				$sections[] = $section->section;
+// // 	        			}
+// // 	        		}
+// // 	        		return implode(', ', $sections);
+
+// 					// get User Groups
+//         			$userGroups = $model->
         	
-					return 'test';
-        		},
-        		'filter' => true,
-        	],
+// 					return 'test';
+//         		},
+//         		'filter' => true,
+//         	],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

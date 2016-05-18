@@ -53,14 +53,12 @@ class CommentsController extends Controller
     /**
      * Displays a single Comments model.
      * @param integer $id
-     * @param integer $ballot_id
-     * @param integer $ballot_option_id
      * @return mixed
      */
-    public function actionView($id, $ballot_id, $ballot_option_id)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id, $ballot_id, $ballot_option_id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -74,7 +72,7 @@ class CommentsController extends Controller
         $model = new Comments();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'ballot_id' => $model->ballot_id, 'ballot_option_id' => $model->ballot_option_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -86,16 +84,14 @@ class CommentsController extends Controller
      * Updates an existing Comments model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @param integer $ballot_id
-     * @param integer $ballot_option_id
      * @return mixed
      */
-    public function actionUpdate($id, $ballot_id, $ballot_option_id)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($id, $ballot_id, $ballot_option_id);
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'ballot_id' => $model->ballot_id, 'ballot_option_id' => $model->ballot_option_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -107,13 +103,11 @@ class CommentsController extends Controller
      * Deletes an existing Comments model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @param integer $ballot_id
-     * @param integer $ballot_option_id
      * @return mixed
      */
-    public function actionDelete($id, $ballot_id, $ballot_option_id)
+    public function actionDelete($id)
     {
-        $this->findModel($id, $ballot_id, $ballot_option_id)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -122,14 +116,12 @@ class CommentsController extends Controller
      * Finds the Comments model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @param integer $ballot_id
-     * @param integer $ballot_option_id
      * @return Comments the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $ballot_id, $ballot_option_id)
+    protected function findModel($id)
     {
-        if (($model = Comments::findOne(['id' => $id, 'ballot_id' => $ballot_id, 'ballot_option_id' => $ballot_option_id])) !== null) {
+        if (($model = Comments::findOne(['id' => $id])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

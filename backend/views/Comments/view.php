@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Comments */
@@ -34,11 +35,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'content:ntext',
             'created_at',
             'updated_at',
-            'user_id',
             'rating',
-            'ballot_id',
-            'ballot_option_id',
             'status',
+        	[
+			    'attribute'=>'user',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getUser()->all(), 'id', 'name')),
+        		'format'=>'raw'
+		    ],
+        	[
+			    'attribute'=>'ballot',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getBallot()->all(), 'id', 'name')),
+        		'format'=>'raw'
+		    ],
+        	[
+			    'attribute'=>'ballotOption',
+			    'value'=>implode('</br>', ArrayHelper::map($model->getBallotOption()->all(), 'id', 'name')),
+        		'format'=>'raw'
+		    ],
         ],
     ]) ?>
 
