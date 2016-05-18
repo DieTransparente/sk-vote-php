@@ -2,9 +2,9 @@ require 'yaml'
 require 'fileutils'
 
 domains = {
-  frontend: 'y2aa-frontend.dev',
-  backend:  'y2aa-backend.dev',
-  phpmyadmin:  'phpmyadmin.dev'
+  frontend: 'sk_vote-frontend.dev',
+  backend:  'sk_vote-backend.dev',
+  phpmyadmin:  'sk_vote-phpmyadmin.dev'
 }
 
 config = {
@@ -49,7 +49,7 @@ Vagrant.configure(2) do |config|
   # network settings
   config.vm.network 'private_network', ip: options['ip']
 
-  # sync: folder 'yii2-app-advanced' (host machine) -> folder '/app' (guest machine)
+  # sync: folder 'sk-vote-php' (host machine) -> folder '/app' (guest machine)
   config.vm.synced_folder './', '/app', owner: 'vagrant', group: 'vagrant'
 
   # disable folder '/vagrant' (guest machine)
