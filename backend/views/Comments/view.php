@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
         	[
 			    'attribute'=>'user',
-			    'value'=>implode('</br>', ArrayHelper::map($model->getUser()->all(), 'id', 'name')),
+			    'value'=>implode('</br>', ArrayHelper::map($model->getUser()->all(), 'id', 'username')),
         		'format'=>'raw'
 		    ],
         	[
