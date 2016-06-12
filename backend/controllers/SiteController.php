@@ -5,7 +5,7 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use backend\models\BackendLoginForm;
 
 /**
  * Site controller
@@ -22,13 +22,14 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'index'],
                         'allow' => true,
+                    	'roles' => [],
                     ],
                     [
                         'actions' => ['logout', 'index', 'administration'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['admin'],
                     ],
                 ],
             ],
@@ -64,7 +65,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
+        $model = new BackendLoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
@@ -82,6 +83,11 @@ class SiteController extends Controller
     }
     
     public function actionAdministration() {
+    	if (\Yii::$app->user->can('createBallot')) {
+			var_dump('canCreateBallot');
+    	} else {
+    		var_dump('cannotCreateBallot');
+    	}
     	return $this->render('administration');
     }
 }
