@@ -3,6 +3,7 @@ namespace console\controllers;
 
 use Yii;
 use yii\console\Controller;
+use common\models\User;
 
 class RbacController extends Controller
 {
@@ -60,10 +61,44 @@ class RbacController extends Controller
         $auth->addChild($admin, $assignUsergroup);
         $auth->addChild($admin, $createBallot);
         // $auth->addChild($admin, $user);
-
-        // Assign roles to users. 1 and 2 are IDs returned by IdentityInterface::getId()
-        // usually implemented in your User model.
-        $auth->assign($user, 2);
-        $auth->assign($admin, 1);
+    }
+    
+    /**
+     * creates a user with the given role (admin/user)
+     * 
+     * @param string Username
+     * @param string Password
+     * @param string Email Address
+     * @param string Role (user/admin)
+     */
+    public function actionCreateuser($username, $password, $email, $role) {
+    	$auth = Yii::$app->authManager;
+    	
+     	// check unique username
+    	if (!empty(User::findByUsername($username))) {
+    		$this->stderr("User already exists\n");
+    		return self::EXIT_CODE_ERROR;
+    	}
+    
+    	// get role
+    	$role = $auth->getRole($role);
+    	if (empty($role)) {
+    		$this->stderr("Invalid role '" . $role . "'. Valid roles are 'admin' or 'user'\n");
+    		return self::EXIT_CODE_ERROR;
+    	}
+    	
+    	// create user
+    	$user = new User;
+    	$user->username = $username;
+    	$user->email = $email;
+    	$user->setPassword($password);
+    	$user->generateAuthKey();
+    	if (!$user->save()) {
+    		$this->stderr("Error saving user\n");
+    		return self::EXIT_CODE_ERROR;
+    	}
+    	
+    	// assign role
+    	$auth->assign($role, $user->id);
     }
 }
