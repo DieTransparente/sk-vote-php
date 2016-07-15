@@ -109,3 +109,7 @@ a.desc:after {
 .nav > li > form > button:hover {
     text-decoration: none;
 }
+
+.column2 .content-wrapper {
+	margin-left: 20px;
+}
